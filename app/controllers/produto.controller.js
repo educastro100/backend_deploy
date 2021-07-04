@@ -44,3 +44,38 @@ exports.findAll = (req, res) => {
         res.status(500).send({ msg: "Erro ao obter lista de produtos" })
     });
 }
+
+// Remover um produto
+exports.update = (req, res) => {
+    if (!req.body) {
+        res.status(400).send({ msg: "Dados inválidos" });
+        return;
+    }
+
+    const id = req.params.id;
+
+    Produto.findByIdAndUpdate(id, req.body).then(data => {
+        if (!data) {
+            res.status(400).send({ msg: "Não foi possível atualizar o Produto" })
+        } else {
+            res.send({ msg: "Produto atualizado com sucesso" });
+        }
+    }).catch(err => {
+        res.status(500).send({ msg: "Erro ao atualizar o Produto" });
+    });
+
+};
+
+// Remover um produto específico
+exports.delete = (req, res) => {
+    const id = req.params.id;
+    Produto.findByIdAndRemove(id).then(data => {
+        if (!data) {
+            res.status(400).send({ msg: "Não foi possível remover o Produto" })
+        } else {
+            res.send({ msg: "Produto deletado com sucesso" });
+        }
+    }).catch(err => {
+        res.status(500).send({ msg: "Erro ao deletar o Produto" });
+    });
+};
